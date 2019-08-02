@@ -543,7 +543,8 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
     
     BOOL isDarkAppearance = NO;
     if (@available(macOS 10.14, *)) {
-        NSAppearanceName currentAppearanceName = [self bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+        NSAppearanceName currentAppearanceName = [self.effectiveAppearance bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua,
+                                                                                                               NSAppearanceNameDarkAqua]];
         if (currentAppearanceName) {
             isDarkAppearance = [currentAppearanceName isEqualToString:NSAppearanceNameDarkAqua];
         }
