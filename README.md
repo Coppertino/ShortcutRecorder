@@ -1,3 +1,6 @@
+### Fork with quick fix for Dark Appearance
+
+
 ShortcutRecorder 2
 ====================
 ![pre-Yosemite ShortcutRecorder Preview](Demo/example.png)

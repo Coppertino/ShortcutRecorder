@@ -540,6 +540,30 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
         return;
 
     [NSGraphicsContext saveGraphicsState];
+    
+    BOOL isDarkAppearance = NO;
+    if (@available(macOS 10.14, *)) {
+        NSAppearanceName currentAppearanceName = [self bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+        if (currentAppearanceName) {
+            isDarkAppearance = [currentAppearanceName isEqualToString:NSAppearanceNameDarkAqua];
+        }
+    }
+    
+    // very bad "workaround" for Dark theme support:
+    // we have added black background and alpha 0.4 for template images
+    // to make input control looks like systme dark controls
+    CGFloat imageAlpha = 1.0;
+    if (isDarkAppearance) {
+        NSRect bgShapeBounds = NSInsetRect(frame, 1, 0);
+        bgShapeBounds.size.height -= 4;
+        bgShapeBounds.origin.y += 1;
+        
+        [[NSColor colorWithDeviceWhite:0 alpha:1.0] setFill];
+        [[NSBezierPath bezierPathWithRoundedRect:bgShapeBounds
+                                         xRadius:_shapeXRadius * 1.5
+                                         yRadius:_shapeYRadious * 1.5] fill];
+        imageAlpha = 0.4;
+    }
 
     if (self.isRecording)
     {
@@ -549,7 +573,7 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
                              _SRImages[5],
                              NO,
                              NSCompositeSourceOver,
-                             1.0,
+                             imageAlpha,
                              self.isFlipped);
     }
     else
@@ -564,7 +588,7 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
                                      _SRImages[2],
                                      NO,
                                      NSCompositeSourceOver,
-                                     1.0,
+                                     imageAlpha,
                                      self.isFlipped);
             }
             else
@@ -575,7 +599,7 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
                                      _SRImages[8],
                                      NO,
                                      NSCompositeSourceOver,
-                                     1.0,
+                                     imageAlpha,
                                      self.isFlipped);
             }
         }
@@ -587,7 +611,7 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
                                  _SRImages[11],
                                  NO,
                                  NSCompositeSourceOver,
-                                 1.0,
+                                 imageAlpha,
                                  self.isFlipped);
         }
         else
@@ -598,7 +622,7 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
                                  _SRImages[18],
                                  NO,
                                  NSCompositeSourceOver,
-                                 1.0,
+                                 imageAlpha,
                                  self.isFlipped);
         }
     }
